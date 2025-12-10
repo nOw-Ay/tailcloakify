@@ -47,10 +47,6 @@ Tailcloakify provides several ways of customizing your theme without the need to
 | TAILCLOAKIFY_HEADER_LOGO_URL                              | Use it to add an image of your logo to the header                                                  |
 | TAILCLOAKIFY_BACKGROUND_VIDEO_URL                         | Use it to add a MP4 format background video on your register and login pages                       |
 | TAILCLOAKIFY_FAVICON_URL                                  | Use it to add a url to your Favicon                                                                |
-| TAILCLOAKIFY_FOOTER_IMPRINT_URL                           | Use it to add an Impressum                                                                         |
-| TAILCLOAKIFY_FOOTER_DATAPROTECTION_URL                    | Use it to add url to your data protection document                                                 |
-| TAILCLOAKIFY_FOOTER_ORESTBIDACOOKIECONSENT                | Use it to integrate Orestbida cookie consent plugin                                                |
-| TAILCLOAKIFY_FOOTER_ORESTBIDACOOKIECONSENT_GOOGLE_CAPTCHA | Provide any falsy value to disable the cookie section for the google captcha                       |
 | TAILCLOAKIFY_SHOW_SOCIAL_PROVIDERS_ON_REGISTER            | Use it to show social identity providers on the registration page (set to "TRUE")                  |
 | TAILCLOAKIFY_EMAIL_BACKGROUND_IMAGE_URL                   | Use it to add a default background image for your email templates                                  |
 | TAILCLOAKIFY_EMAIL_LOGO                                   | Use it to add an image of your logo to your email templates                                        |
@@ -68,8 +64,6 @@ Some customizations are possible through Keycloak's Localization System, allowin
 | backgroundImageUrl            | The localized enabled alternative to env: TAILCLOAKIFY_BACKGROUND_IMAGE_URL              |
 | backgroundVideoUrl            | The localized enabled alternative to env: TAILCLOAKIFY_BACKGROUND_VIDEO_URL              |
 | faviconUrl                    | The localized enabled alternative to env: TAILCLOAKIFY_FAVICON_URL                       |
-| footerImprintUrl              | The localized enabled alternative to env: TAILCLOAKIFY_FOOTER_IMPRINT_URL                |
-| footerDataprotectionUrl       | The localized enabled alternative to env: TAILCLOAKIFY_FOOTER_DATAPROTECTION_URL         |
 | showSocialProvidersOnRegister | The localized enabled alternative to env: TAILCLOAKIFY_SHOW_SOCIAL_PROVIDERS_ON_REGISTER |
 
 **_Note_**: Unlike the Login theme, the Email theme does not include a feature for adding localized variables directly from the Keycloak admin console. Therefore, the email environment variables in the above section

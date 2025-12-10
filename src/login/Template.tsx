@@ -7,7 +7,6 @@ import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import { useInitialize } from "keycloakify/login/Template.useInitialize";
 import type { I18n } from "./i18n";
 import type { KcContext } from "./KcContext";
-import useSetCookieConsent from "./useSetCookieConsent.tsx";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const {
@@ -28,7 +27,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, advancedMsgStr, currentLanguage, enabledLanguages } = i18n;
+    const { msg, msgStr, advancedMsgStr } = i18n;
 
     const { realm, auth, url, message, isAppInitiatedAction } = kcContext;
 
@@ -72,20 +71,10 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
             scriptUrls.forEach(url => promisses.push(loadScript(url)));
         }
 
-        if (kcContext.properties["TAILCLOAKIFY_ADDITIONAL_SCRIPTS"]) {
-            const scriptUrls = kcContext.properties["TAILCLOAKIFY_ADDITIONAL_SCRIPTS"].split(";"); // Split the URLs by semicolon
-            scriptUrls.forEach(url => promisses.push(loadScript(url)));
-        }
-
         if (kcContext.properties["scripts"]) {
             const scriptUrls = kcContext.properties["scripts"].split(" "); // Split the URLs by space
             scriptUrls.forEach(url => promisses.push(loadScript(url)));
         }
-
-        Promise.all(promisses).then(() => {
-            if (window.CookieConsent === undefined && kcContext.properties["TAILCLOAKIFY_FOOTER_ORESTBIDACOOKIECONSENT"])
-                useSetCookieConsent(kcContext, i18n);
-        });
     }, []);
 
     // Load CSS
@@ -139,10 +128,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         qualifiedName: "body",
         className: bodyClassName ?? kcClsx("kcBodyClass")
     });
-
-    const footerImprintUrl = advancedMsgStr("footerImprintUrl") !== "footerImprintUrl" ? advancedMsgStr("footerImprintUrl") : null;
-    const footerDataprotectionUrl =
-        advancedMsgStr("footerDataprotectionUrl") !== "footerDataprotectionUrl" ? advancedMsgStr("footerDataprotectionUrl") : null;
 
     const backgroundImageUrl = advancedMsgStr("backgroundImageUrl") !== "backgroundImageUrl" ? advancedMsgStr("backgroundImageUrl") : null;
     const backgroundLogoUrl = advancedMsgStr("backgroundLogoUrl") !== "backgroundLogoUrl" ? advancedMsgStr("backgroundLogoUrl") : null;
@@ -287,78 +272,6 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                 </div>
                 <div className={"flex justify-around"}></div>
             </div>
-            <footer className={"flex justify-between max-w-md w-full mt-8 relative"}>
-                <section className={"flex flex-col ml-5"}>
-                    {(footerImprintUrl || kcContext.properties["TAILCLOAKIFY_FOOTER_IMPRINT_URL"]) && (
-                        <a
-                            className={"text-secondary-600 hover:text-secondary-900 text-sm inline-flex no-underline hover:no-underline"}
-                            target={"_blank"}
-                            rel={"noopener noreferrer"}
-                            href={footerImprintUrl || kcContext.properties["TAILCLOAKIFY_FOOTER_IMPRINT_URL"]}
-                        >
-                            {msg("footerImprintTitle")}
-                        </a>
-                    )}
-                    {(footerDataprotectionUrl || kcContext.properties["TAILCLOAKIFY_FOOTER_DATAPROTECTION_URL"]) && (
-                        <a
-                            className={"text-secondary-600 hover:text-secondary-900 text-sm inline-flex no-underline hover:no-underline"}
-                            target={"_blank"}
-                            rel={"noopener noreferrer"}
-                            href={footerDataprotectionUrl || kcContext.properties["TAILCLOAKIFY_FOOTER_DATAPROTECTION_URL"]}
-                        >
-                            {msg("footerDataProtectionTitle")}
-                        </a>
-                    )}
-                    {kcContext.properties["TAILCLOAKIFY_FOOTER_ORESTBIDACOOKIECONSENT"] && (
-                        <a
-                            className={"text-secondary-600 hover:text-secondary-900 text-sm inline-flex no-underline hover:no-underline"}
-                            target={"_blank"}
-                            rel={"noopener noreferrer"}
-                            type={"button"}
-                            onClick={() => window?.CookieConsent?.showPreferences()}
-                        >
-                            {msg("footerCookiePreferencesTitle")}
-                        </a>
-                    )}
-                </section>
-
-                <section>
-                    {enabledLanguages.length > 1 && (
-                        <div className={kcClsx("kcLocaleMainClass")} id="kc-locale">
-                            <div id="kc-locale-wrapper" className={kcClsx("kcLocaleWrapperClass")}>
-                                <div id="kc-locale-dropdown" className={clsx("menu-button-links", kcClsx("kcLocaleDropDownClass"))}>
-                                    <button
-                                        tabIndex={1}
-                                        id="kc-current-locale-link"
-                                        aria-label={msgStr("languages")}
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
-                                        aria-controls="language-switch1"
-                                    >
-                                        {currentLanguage.label}
-                                    </button>
-                                    <ul
-                                        role="menu"
-                                        tabIndex={-1}
-                                        aria-labelledby="kc-current-locale-link"
-                                        aria-activedescendant=""
-                                        id="language-switch1"
-                                        className={kcClsx("kcLocaleListClass")}
-                                    >
-                                        {enabledLanguages.map(({ languageTag, label, href }, i) => (
-                                            <li key={languageTag} className={kcClsx("kcLocaleListItemClass")} role="none">
-                                                <a role="menuitem" id={`language-${i + 1}`} className={kcClsx("kcLocaleItemClass")} href={href}>
-                                                    {label}
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </section>
-            </footer>
         </div>
     );
 }
